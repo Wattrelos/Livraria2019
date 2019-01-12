@@ -33,13 +33,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Autor.findAll", query = "SELECT a FROM Autor a")
     , @NamedQuery(name = "Autor.findById", query = "SELECT a FROM Autor a WHERE a.id = :id")
-    , @NamedQuery(name = "Autor.findByNome", query = "SELECT a FROM Autor a WHERE a.nome like :nome")
+    , @NamedQuery(name = "Autor.findByName", query = "SELECT a FROM Autor a WHERE a.nome like :nome") // Aviso: A coluna se chama "nome" que foi traduzida para name na QUERY.
     , @NamedQuery(name = "Autor.findByDataCadastro", query = "SELECT a FROM Autor a WHERE a.dataCadastro = :dataCadastro")})
 public class Autor implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)    
+    @GeneratedValue(strategy = GenerationType.IDENTITY)    
     @Column(name = "id")
     private Integer id;
     @Basic(optional = false)

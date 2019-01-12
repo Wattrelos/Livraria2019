@@ -43,7 +43,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Livro.findAll", query = "SELECT l FROM Livro l")
     , @NamedQuery(name = "Livro.findById", query = "SELECT l FROM Livro l WHERE l.id = :id")
     , @NamedQuery(name = "Livro.findByIsbn", query = "SELECT l FROM Livro l WHERE l.isbn = :isbn")
-    , @NamedQuery(name = "Livro.findByNome", query = "SELECT l FROM Livro l WHERE l.nome = :nome")
+    , @NamedQuery(name = "Livro.findByName", query = "SELECT l FROM Livro l WHERE l.nome = :nome") // Aviso: A coluna se chama "nome" que foi traduzida para name na QUERY.
     , @NamedQuery(name = "Livro.findByAno", query = "SELECT l FROM Livro l WHERE l.ano = :ano")
     , @NamedQuery(name = "Livro.findByDimensao", query = "SELECT l FROM Livro l WHERE l.dimensao = :dimensao")
     , @NamedQuery(name = "Livro.findByCusto", query = "SELECT l FROM Livro l WHERE l.custo = :custo")

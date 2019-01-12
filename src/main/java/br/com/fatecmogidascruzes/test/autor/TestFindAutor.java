@@ -20,7 +20,7 @@ public class TestFindAutor {
         // Teste de busca por autor, um autores.
         AutorDAO autorfacade = new AutorDAO();
         Autor autor = new Autor(18,"");        
-        Autor autor2 = autorfacade.findById(autor.getId());
+        Autor autor2 = autorfacade.findByOneById(autor.getId());
         if(autor2 == null)
             System.out.println("\033[46mAutor não encontrado"); 
         else

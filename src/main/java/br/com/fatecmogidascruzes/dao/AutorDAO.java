@@ -7,5 +7,7 @@ public class AutorDAO extends AbstractDAO<Autor> {
 
     public AutorDAO() {
         super(Autor.class);
-    }  
+    }
+
+    
 }

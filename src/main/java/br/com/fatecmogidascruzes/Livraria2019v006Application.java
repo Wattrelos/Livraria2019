@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import br.com.fatecmogidascruzes.dao.AutorDAO;
 import br.com.fatecmogidascruzes.domain.Autor;
+import br.com.fatecmogidascruzes.domain.Categoria;
 
 @SpringBootApplication
 public class Livraria2019v006Application {
@@ -15,11 +16,12 @@ public class Livraria2019v006Application {
 	public static void main(String[] args) {
 		SpringApplication.run(Livraria2019v006Application.class, args);
 		
-        AutorDAO autorfacade = new AutorDAO();
+        AutorDAO autordao = new AutorDAO();
         List<Autor> autores = new ArrayList<>();
-        autores = autorfacade.findAll();  
-        for(Autor autor : autores)
-            System.out.println(autor.toString());
+        autores = autordao.findAll();  
+        for(Autor autor : autores) {
+        	System.out.println(autor.toString());        	
+        }        
 	}
 
 }

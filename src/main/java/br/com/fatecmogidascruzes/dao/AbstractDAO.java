@@ -10,98 +10,91 @@ public abstract class AbstractDAO<T> {
 
     private Class<T> entityClass;
     private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("livraria2019");
-    protected EntityManager em = emf.createEntityManager();   
+    protected EntityManager entityManager = emf.createEntityManager();
 
     public AbstractDAO(Class<T> entityClass) {
-        this.entityClass = entityClass;
-    }
-    
-    protected EntityManager getEntityManager(){
-        return em;
-    }
+        this.entityClass = entityClass;        
+    }  
     
     protected String getColumnName(){
     	return "nome"; // Por padrão, retorna o nome da coluna para busca por nome.        
 }   
     
     protected String getQueryFindByName(){
-        return "findByName"; //  Por padrão, busca pelo nome.
+        return entityClass.getSimpleName() + ".findByName"; //  Por padrão, busca pelo nome. Se a nome da coluna for diferente de "nome" este método deve ser implementado.
     }
 
-    public void create(T entity) {
+    public void create(T entity) {    	
         try{
-        	System.out.println("\033[46m" + entityClass.getSimpleName() + " >>>> em.getTransaction().begin()\n");
-            em.getTransaction().begin();
-            System.out.println("\033[46m" + entityClass.getSimpleName() + " >>>> getEntityManager().persist(entity)\n");
-            getEntityManager().persist(entity);
-            System.out.println("\033[46m" + entityClass.getSimpleName() + " >>>> em.getTransaction().commit()\n");
-            em.getTransaction().commit();
-            System.out.println("\033[46m" + entityClass.getSimpleName() + " gravado com sucesso!\n");                
+        	entityManager.getTransaction().begin();            
+        	entityManager.persist(entity);            
+        	entityManager.getTransaction().commit();
+            System.out.println(entityClass.getSimpleName() + " gravado com sucesso!\n");                
         }catch(Exception ex){
-            System.out.println("\033[46mErro ao tentar gravar: " + entityClass.getSimpleName() + "\n"+ ex);                
+            System.out.println("Erro ao tentar gravar: " + entityClass.getSimpleName() + "\n"+ ex);                
         }finally{
-            em.close();
+        	entityManager.close();
         }
     }
     
     public void create(List<T> entity) {
         try{
-            em.getTransaction().begin();
+        	this.entityManager.getTransaction().begin();
             for(T t: entity){
-                getEntityManager().persist(t);            
+            	this.entityManager.persist(t);            
             }
-            em.getTransaction().commit();
-            System.out.println("\033[46m" + entityClass.getSimpleName() + " gravados com sucesso!\n"); 
+            this.entityManager.getTransaction().commit();
+            System.out.println(entityClass.getSimpleName() + " gravados com sucesso!\n"); 
        
         }catch(Exception ex){
-            System.out.println("\033[46mErro ao tentar gravar lista de " + entityClass.getSimpleName() + "\n"+ ex);                
+            System.out.println(entityClass.getSimpleName() + "\n"+ ex);                
         }finally{
-            em.close();
+        	this.entityManager.close();
         }
     }
 
     public void edit(T entity) {
         try{
-            em.getTransaction().begin();
-            getEntityManager().merge(entity);
-            em.getTransaction().commit();
+        	this.entityManager.getTransaction().begin();
+        	this.entityManager.merge(entity);
+            this.entityManager.getTransaction().commit();
             System.out.println("\033[46m" + entityClass.getSimpleName() + " atualizado com sucesso!\n"); 
         }catch(Exception ex){
             System.out.println("\033[46mErro ao tentar editar " + entityClass.getSimpleName()+ "\n"+ ex);                
         }finally{
-            em.close();
+        	this.entityManager.close();
         }
     }
 
     public void remove(T entity) {
         try{
-            em.getTransaction().begin();
-            getEntityManager().remove(getEntityManager().merge(entity));        
-            em.getTransaction().commit();
-            System.out.println("\033[46m" + entityClass.getSimpleName() + " excluído com sucesso!\n"); 
+        	this.entityManager.getTransaction().begin();
+            this.entityManager.remove(this.entityManager.merge(entity));        
+            this.entityManager.getTransaction().commit();
+            System.out.println(entityClass.getSimpleName() + " excluído com sucesso!\n"); 
         }catch(Exception ex){
-            System.out.println("\033[46mErro ao tentar apagar " + entityClass.getSimpleName() + "\n"+ ex);                
+            System.out.println(entityClass.getSimpleName() + "\n"+ ex);                
         }finally{
-            em.close();
+        	this.entityManager.close();
         }
     }
 
-    public T findById(Integer id) {
-        return getEntityManager().find(entityClass, id);
+    public T findByOneById(Integer id) {
+        return this.entityManager.find(entityClass, id);
     }
     
     public List<T> findByName(String name) {
         try{
-            return getEntityManager().createNamedQuery(getQueryFindByName(),entityClass).setParameter(getColumnName(), name).getResultList();
+            return this.entityManager.createNamedQuery(getQueryFindByName(),entityClass).setParameter(getColumnName(), name).getResultList();
         }catch(Exception ex){
-            System.out.println(ex);            
+            System.out.println("Nenhum autor encontrado" + ex);            
             return null;
         }            
     }
     
     public T findOneByName(String name) {
         try{
-            return getEntityManager().createNamedQuery(getQueryFindByName(),entityClass).setParameter(getColumnName(), name).getSingleResult();
+            return this.entityManager.createNamedQuery(getQueryFindByName(),entityClass).setParameter(getColumnName(), name).getSingleResult();
         }catch(Exception ex){
             System.out.println(ex);            
             return null;
@@ -110,25 +103,25 @@ public abstract class AbstractDAO<T> {
     }
 
     public List<T> findAll() {
-        javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
+        javax.persistence.criteria.CriteriaQuery cq = this.entityManager.getCriteriaBuilder().createQuery();
         cq.select(cq.from(entityClass));
-        return getEntityManager().createQuery(cq).getResultList();
+        return this.entityManager.createQuery(cq).getResultList();
     }
 
     public List<T> findRange(int[] range) {
-        javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
+        javax.persistence.criteria.CriteriaQuery cq = this.entityManager.getCriteriaBuilder().createQuery();
         cq.select(cq.from(entityClass));
-        javax.persistence.Query q = getEntityManager().createQuery(cq);
+        javax.persistence.Query q = this.entityManager.createQuery(cq);
         q.setMaxResults(range[1] - range[0] + 1);
         q.setFirstResult(range[0]);
         return q.getResultList();
     }
 
     public int count() {
-        javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
+        javax.persistence.criteria.CriteriaQuery cq = this.entityManager.getCriteriaBuilder().createQuery();
         javax.persistence.criteria.Root<T> rt = cq.from(entityClass);
-        cq.select(getEntityManager().getCriteriaBuilder().count(rt));
-        javax.persistence.Query q = getEntityManager().createQuery(cq);
+        cq.select(this.entityManager.getCriteriaBuilder().count(rt));
+        javax.persistence.Query q = this.entityManager.createQuery(cq);
         return ((Long) q.getSingleResult()).intValue();
     }
     

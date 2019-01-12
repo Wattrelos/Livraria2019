@@ -24,10 +24,10 @@ public class TestFindListAutorByName {
         List<Autor> autores = new ArrayList<>();                
         autores = autorfacade.findByName("B%");
         if(autores == null){
-            System.out.println("\033[46mNenhum autor encontrado"); 
+            System.out.println("Nenhum autor encontrado"); 
         }else{
             for(Autor autor : autores){
-                System.out.println("\033[46m" + autor.toString());
+                System.out.println(autor.toString());
             } 
         }
     }

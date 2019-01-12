@@ -34,7 +34,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Editora.findAll", query = "SELECT e FROM Editora e")
     , @NamedQuery(name = "Editora.findById", query = "SELECT e FROM Editora e WHERE e.id = :id")
-    , @NamedQuery(name = "Editora.findByNome", query = "SELECT e FROM Editora e WHERE e.nome = :nome")
+    , @NamedQuery(name = "Editora.findByName", query = "SELECT e FROM Editora e WHERE e.nome = :nome") // Aviso: A coluna se chama "nome" que foi traduzida para name na QUERY.
     , @NamedQuery(name = "Editora.findByDataCadastro", query = "SELECT e FROM Editora e WHERE e.dataCadastro = :dataCadastro")})
 public class Editora implements Serializable {
 

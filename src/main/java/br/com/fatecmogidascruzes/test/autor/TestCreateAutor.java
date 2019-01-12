@@ -10,7 +10,7 @@ public class TestCreateAutor {
     
     public static void main(String[] args){
     
-        Autor autor01 = new Autor("Simone Diniz Junqueira Barbosa");
+        Autor autor01 = new Autor("aaaaaaccccc");
         AutorDAO autorfacade = new AutorDAO();     
         autorfacade.create(autor01);
     }

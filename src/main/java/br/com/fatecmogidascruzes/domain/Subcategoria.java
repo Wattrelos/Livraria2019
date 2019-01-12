@@ -36,7 +36,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Subcategoria.findAll", query = "SELECT s FROM Subcategoria s")
     , @NamedQuery(name = "Subcategoria.findById", query = "SELECT s FROM Subcategoria s WHERE s.id = :id")
-    , @NamedQuery(name = "Subcategoria.findByNome", query = "SELECT s FROM Subcategoria s WHERE s.nome = :nome")
+    , @NamedQuery(name = "Subcategoria.findByName", query = "SELECT s FROM Subcategoria s WHERE s.nome = :nome") // Aviso: A coluna se chama "nome" que foi traduzida para name na QUERY findByName.
     , @NamedQuery(name = "Subcategoria.findByDataCadastro", query = "SELECT s FROM Subcategoria s WHERE s.dataCadastro = :dataCadastro")})
 public class Subcategoria implements Serializable {
 
